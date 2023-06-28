@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HaewoosoMapper">
+	
+	<select id="selectUUIDAndTOKEN" parameterType="string" resultType="com.haewooso.haewoosoPJT.domain.HaewoosoUserTableVO">
+		/* HaewoosoMapper.selectUUIDAndTOKEN */
+		SELECT UUID
+		     , PUSH_TOKEN
+		     , SEND_COUNT
+  		  FROM USER_TABLE
+ 		 WHERE 1=1
+ 		   AND UUID = #{uuid}
+		
+	</select>
+	
+	<select id="selectRandomReceiverToken" parameterType="string" resultType="com.haewooso.haewoosoPJT.domain.HaewoosoUserTableVO">
+		/* HaewoosoMapper.selectRandomReceiverToken */
+		SELECT PUSH_TOKEN
+		  FROM USER_TABLE
+		 WHERE 1=1
+		   AND UUID NOT IN (#{myUUID}) 
+ 		 ORDER BY RANDOM() LIMIT 1
+		
+	</select>
+	
+	<insert id="insertMessageInformaion" parameterType="com.haewooso.haewoosoPJT.domain.HaewoosoSendMsgVO">
+		/* HaewoosoMapper.insertMessageInformaion */
+		INSERT INTO SEND_MSG
+		(
+			SENDER_UUID
+		  , RECEIVER_UUID
+		  , TITLE
+		  , DESCRIPTION
+		  , SEND_BOARD_REPLY_COUNT
+		  , REPLY_COMPLETE_YN
+		  , SEND_DTM
+		  , RECEIVE_DTM
+		)
+		VALUES
+		(
+		    #{sender_uuid}
+		  , #{receiver_uuid}
+		  , #{title}
+		  , #{description}
+		  , '5'
+		  ,'Y'
+		  , #{send_dtm}
+		  , #{receive_dtm}
+		)
+	</insert>
+	
+</mapper>
